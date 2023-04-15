@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Worse Deeeep.io</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+		<link rel="shortcut icon" href="/assets/icon64.png" />
+		<meta property="description" content="Worse Deeeep.io. It looks like Deeeep.io, but it's so horrible it shouldn't be a real game. " />
+		<meta property="og:title" content="Worse Deeeep.io" />
+		<meta property="og:description" content="Worse Deeeep.io. It looks like Deeeep.io, but it's so horrible it shouldn't be a real game. " />
+	</head>
+	<body>
+		<canvas id="game-canvas"></canvas>
+		<div id="home-page">
+			<div id="widget-container">
+				<div id="left-menu" class="menu-widget">
+					<h4>Changelogs</h4>
+					<div class="scrollable">
+						<p>Apr. 15, 2023 | 8pm UTC</p>
+						<ul>
+							<li>Better ground collision physics</li>
+							<li>Better gravity physics</li>
+							<li>Squid can now hide</li>
+							<li>Food cannot be eaten while hiding</li>
+							<li>Add name length limit</li>
+						</ul>
+						<p>Jan. 1, 2023 | 2am UTC</p>
+						<ul>
+							<li>Press escape to show main menu</li>
+						</ul>
+						<p>Dec. 30, 2022 | 8pm UTC</p>
+						<ul>
+							<li>Added score text and name above animal</li>
+							<li>You can now stop swimming by hovering cursor over the animal</li>
+							<li>Made boosting more smooth</li>
+						</ul>
+						<p>Dec. 30, 2022 | 12am UTC</p>
+						<ul>
+							<li>Added more animals:</li>
+							<ul>
+								<li>Crab</li>
+								<li>Jellyfish</li>
+								<li>Squid</li>
+							</ul>
+							<li>Crab swims at 80% speed and slowly sinks</li>
+							<li>Added boosting</li>
+							<li>Added boost bars</li>
+						</ul>
+						<p>Dec. 29, 2022 | 2am UTC</p>
+						<ul>
+							<li>Added meat</li>
+							<li>Meat slowly sinks until it reaches the ground</li>
+						</ul>
+						<p>Dec. 29, 2022 | 12am UTC</p>
+						<ul>
+							<li>Initial release</li>
+							<li>XP bar</li>
+							<li>Reef algae, plankton, reef food</li>
+							<li>Fish</li>
+						</ul>
+					</div>
+				</div>
+				<div id="play-menu" class="menu-widget">
+					<h1>Worse Deeeep.io</h1>
+					<p>Eat fish, become fish(?)</p>
+					<hr />
+					<input type="text" maxlength="69" id="username-input" placeholder="Name an enter..." />
+					<button id="play-button">Play</button>
+				</div>
+				<div id="right-menu" class="menu-widget">
+					<h4>Features</h4>
+					<div class="scrollable">
+						<ul>
+							<li>No airboosting (it's too OP)</li>
+							<li>No pvp (let's have peace)</li>
+							<li>Meat rain (credits to giphy for the idea)</li>
+							<li>Auto evolution</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="left" class="hidden">
+			<div id="boost-bar-1" class="boost-bar">
+				<div class="inner"></div>
+			</div>
+			<div id="boost-bar-2" class="boost-bar">
+				<div class="inner"></div>
+			</div>
+			<div id="boost-bar-3" class="boost-bar">
+				<div class="inner"></div>
+			</div>
+			<div id="boost-bar-4" class="boost-bar">
+				<div class="inner"></div>
+			</div>
+		</div>
+		<div id="bottom">
+			<div id="xp-bar" class="hidden">
+				<div class="inner"></div>
+				<p id="count">You are a Fish</p>
+			</div>
+		</div>
+		<div id="leaderboard" class="hidden">
+			<table>
+				<tr class="tablehead">
+					<th></th>
+					<th>Leaderboard</th>
+					<th></th>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+		<div id="disconnect-modal" class="hidden">
+			<div class="menu-widget">
+				<h2>Disconnected from Server</h2>
+				<hr />
+				<button id="reconnect-button">RECONNECT</button>
+			</div>
+		</div>
+	</body>
+</html>
