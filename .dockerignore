@@ -87,6 +87,6 @@ package-lock.json
 # DynamoDB Local files
 **\.dynamodb
 
-# Added by me
 **\.DS_Store
-# **\dist
+
+.git\
