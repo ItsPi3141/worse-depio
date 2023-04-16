@@ -1,4 +1,4 @@
-const ASSET_NAMES = ["map.svg", "sushi.png", "animals/fish.png", "animals/crab.png", "animals/jellyfish.png", "animals/squid.png"];
+const ASSET_NAMES = ["map.svg", "sushi.png", "animals/fish.png", "animals/crab.png", "animals/jellyfish.png", "animals/squid.png", "animals/seagull.png"];
 
 const assets = {};
 

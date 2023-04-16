@@ -99,7 +99,7 @@ class Game {
 		Object.keys(this.sockets).forEach((playerID) => {
 			const me = this.players[playerID];
 			this.xp.forEach((xp) => {
-				if (me.distanceTo(xp) < Constants.PLAYER_RADIUS && !me.hiding) {
+				if (me.distanceTo(xp) < Constants.PLAYER_RADIUS * AnimalConstants[me.tier - 1][0].size.multiplier && !me.hiding) {
 					if (xp.type == 0 || xp.type == 1) {
 						me.score += 200;
 						me.boosts = Math.min(me.boosts + 0.15, AnimalConstants[me.tier - 1][0].boosts);

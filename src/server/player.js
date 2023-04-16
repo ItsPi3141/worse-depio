@@ -31,8 +31,8 @@ class Player extends ObjectClass {
 		var speedMultiplier = this.moving ? AnimalConstants[this.tier - 1][0].speed : 0;
 
 		// Make sure the player stays in bounds
-		this.x = Math.max(PLAYER_RADIUS, Math.min(Constants.MAP_WIDTH - PLAYER_RADIUS, this.x));
-		this.y = Math.max(PLAYER_RADIUS, Math.min(Constants.MAP_HEIGHT - PLAYER_RADIUS, this.y));
+		this.x = Math.max(PLAYER_RADIUS * AnimalConstants[this.tier - 1][0].size.multiplier, Math.min(Constants.MAP_WIDTH - PLAYER_RADIUS * AnimalConstants[this.tier - 1][0].size.multiplier, this.x));
+		this.y = Math.max(PLAYER_RADIUS * AnimalConstants[this.tier - 1][0].size.multiplier, Math.min(Constants.MAP_HEIGHT - PLAYER_RADIUS * AnimalConstants[this.tier - 1][0].size.multiplier, this.y));
 
 		// Check for collisions with the map
 		MapConstants.MAP_LINES.forEach((line) => {
@@ -44,9 +44,11 @@ class Player extends ObjectClass {
 			}
 		});
 
+		const stats = AnimalConstants[this.tier - 1][0];
+
 		// Check if player is out of water
 		const dist = Constants.WATERLINE.y1 - this.y;
-		if (dist > 0) {
+		if (dist > 0 && !stats.canFly) {
 			this.thrust -= 0.4;
 			if (this.directionWhenLeavingWater == null) this.directionWhenLeavingWater = this.direction;
 			if (this.speedWhenLeavingWater == null) this.speedWhenLeavingWater = this.speed;
@@ -63,8 +65,8 @@ class Player extends ObjectClass {
 		this.x += dt * (this.speedWhenLeavingWater || this.speed) * speedMultiplier * Math.sin(this.directionWhenLeavingWater || this.direction);
 		this.y -= dt * (this.speedWhenLeavingWater || this.speed) * speedMultiplier * Math.cos(this.directionWhenLeavingWater || this.direction) + this.thrust;
 
-		const stats = AnimalConstants[this.tier - 1][0];
 		if (stats.heavy) this.y += 2.5; // + is going down
+		if (stats.buoyant && dist < 0) this.y -= 5; // - is going up
 
 		//Evolve
 		if (this.score > this.animal.upgrade && AnimalConstants.length > this.tier) {

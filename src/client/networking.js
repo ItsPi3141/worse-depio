@@ -42,6 +42,5 @@ export const setMoving = throttle(20, (bool) => {
 });
 
 export const boost = throttle(200, () => {
-	console.log("boost!");
 	socket.emit(Constants.MSG_TYPES.BOOST);
 });

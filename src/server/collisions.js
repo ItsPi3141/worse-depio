@@ -31,32 +31,11 @@ module.exports = {
 		const width = Math.max(x1, x2);
 		const y = Math.min(y1, y2);
 		me.stats = AnimalConstants[me.tier - 1][0];
-		// if (me.x + me.stats.size.x / 2 > x - 10 && me.x + me.stats.size.x / 2 < width + 10 && me.y > y + 10) {
-		// 	return [1, 0];
-		// }
-		// if (me.x - me.stats.size.x / 2 > x - 10 && me.x - me.stats.size.x / 2 < width + 10 && me.y > y + 10) {
-		// 	return [-1, 0];
-		// }
-		if (me.x > x - 10 && me.x < width + 10 && me.y + me.stats.size.y / 2 > y + 10) {
-			return [0, 1];
+		if (me.x > x - 15 && me.x < width + 15 && me.y > y - PLAYER_RADIUS * AnimalConstants[me.tier - 1][0].size.multiplier) {
+			return true;
+		} else {
+			return false;
 		}
-		if (me.x > x - 10 && me.x < width + 10 && me.y - me.stats.size.y / 2 > y + 10) {
-			return [0, -1];
-		}
-
-		// if (me.x + me.stats.size.x / 2 > x - 10 && me.x + me.stats.size.x / 2 < width + 10 && me.y + me.stats.size.y / 2 > y + 10) {
-		// 	return [1, 1];
-		// }
-		// if (me.x - me.stats.size.x / 2 > x - 10 && me.x - me.stats.size.x / 2 < width + 10 && me.y + me.stats.size.y / 2 > y + 10) {
-		// 	return [-1, 1];
-		// }
-		// if (me.x + me.stats.size.x / 2 > x - 10 && me.x + me.stats.size.x / 2 < width + 10 && me.y - me.stats.size.y / 2 > y + 10) {
-		// 	return [1, -1];
-		// }
-		// if (me.x - me.stats.size.x / 2 > x - 10 && me.x - me.stats.size.x / 2 < width + 10 && me.y - me.stats.size.y / 2 > y + 10) {
-		// 	return [-1, -1];
-		// }
-		return false;
 	},
 
 	// Returns an array of bullets to be destroyed.
@@ -117,12 +96,12 @@ module.exports = {
 		const m = (y2 - y1) / (x2 - x1);
 		if (m < 1) {
 			const c1 = y1 - m * x1;
-			const dy = me.x * m + c1 - PLAYER_RADIUS * 0.9;
+			const dy = me.x * m + c1 - PLAYER_RADIUS * AnimalConstants[me.tier - 1][0].size.multiplier * 0.9;
 			return [me.x, dy];
 		}
 		if (m > 1) {
 			const c2 = x1 - y1 / m;
-			const dx = me.y / m + c2 + PLAYER_RADIUS * 0.9;
+			const dx = me.y / m + c2 + PLAYER_RADIUS * AnimalConstants[me.tier - 1][0].size.multiplier * 0.9;
 			return [dx, me.y];
 		}
 		return [me.x, me.y];
