@@ -3,6 +3,7 @@
 import { boost, updateDirection, setMoving } from "./networking";
 import { getZoomRatio } from "./render";
 const Constants = require("../shared/constants");
+var playerDir = 0;
 
 function onMouseInput(e) {
 	handleInput(e.clientX, e.clientY);
@@ -25,6 +26,11 @@ function handleInput(x, y) {
 		setMoving(true);
 	}
 	updateDirection(dir);
+	playerDir = dir;
+}
+
+export function getPlayerDir() {
+	return playerDir;
 }
 
 export function startCapturingInput() {

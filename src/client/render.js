@@ -5,6 +5,7 @@ import { getAsset } from "./assets";
 import { getCurrentState } from "./state";
 const AnimalConstants = require("../shared/animal-constants");
 import { humanReadableScore } from "./scoretext";
+import { getPlayerDir } from "./input";
 
 var count = document.getElementById("count");
 
@@ -139,7 +140,8 @@ function renderWaterline(x, y) {
 function renderPlayer(me, player) {
 	window.me = me;
 	window.player = player;
-	const { x, y, direction } = player;
+	var { x, y, direction } = player;
+	if (me) direction = getPlayerDir();
 	const canvasX = canvas.width / 2 + x - me.x;
 	const canvasY = canvas.height / 2 + y - me.y;
 
