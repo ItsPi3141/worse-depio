@@ -49,7 +49,7 @@ class Player extends ObjectClass {
 		// Check if player is out of water
 		const dist = Constants.WATERLINE.y1 - this.y;
 		if (dist > 0 && !stats.canFly) {
-			this.thrust -= 0.4;
+			this.thrust -= 0.3;
 			if (this.directionWhenLeavingWater == null) this.directionWhenLeavingWater = this.direction;
 			if (this.speedWhenLeavingWater == null) this.speedWhenLeavingWater = this.speed;
 		} else {

@@ -20,11 +20,10 @@ class Game {
 		setInterval(this.update.bind(this), 1000 / 60);
 	}
 
-	generateXp() {
-		if (this.xp.length < 100) {
-			const xp = new Xp();
+	generateXp(type) {
+		const xp = new Xp(type || Math.floor(Math.random() * 4));
+		if (xp.verify(xp.type)) {
 			this.xp.push(xp);
-			xp.verify();
 		}
 	}
 
@@ -76,9 +75,6 @@ class Game {
 		});
 		this.bullets = this.bullets.filter((bullet) => !bulletsToRemove.includes(bullet));
 
-		//Update Xp
-		this.generateXp();
-
 		// Make sushi sink
 		this.xp.forEach((xp) => {
 			if (xp.type == 2) {
@@ -107,6 +103,7 @@ class Game {
 						me.score += 2000;
 						me.boosts = Math.min(me.boosts + 0.2, AnimalConstants[me.tier - 1][0].boosts);
 					} else {
+						if (me.tier > 8) return;
 						me.score += 50;
 						me.boosts = Math.min(me.boosts + 0.1, AnimalConstants[me.tier - 1][0].boosts);
 					}
@@ -114,7 +111,32 @@ class Game {
 				}
 			});
 		});
-		this.xp = this.xp.filter((xp) => !xpToRemove.includes(xp));
+		// this.xp = this.xp.filter((xp) => !xpToRemove.includes(xp));
+		for (let i = 0; i < this.xp.length; i++) {
+			if (xpToRemove.includes(this.xp[i])) {
+				const xpType = this.xp[i].type;
+				this.generateXp(xpType);
+			}
+		}
+		for (let i = 0; i < this.xp.length; i++) {
+			if (xpToRemove.includes(this.xp[i])) {
+				this.xp.splice(i, 1);
+			}
+		}
+
+		//Update Xp
+		if (xpToRemove.length == 0) {
+			while (this.xp.length < 100) {
+				var type = Math.floor(Math.random() * 4);
+				var typeCount = 0;
+				for (let i = 0; i < this.xp.length; i++) {
+					if (this.xp[i].type == type) {
+						typeCount++;
+					}
+				}
+				if (typeCount < Constants.FOODS[type].count) this.generateXp(type);
+			}
+		}
 
 		// Update each player
 		Object.keys(this.sockets).forEach((playerID) => {

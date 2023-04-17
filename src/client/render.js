@@ -92,16 +92,19 @@ function render() {
 	renderBoostBar(me);
 
 	// Draw boundaries
-	context.strokeStyle = "black";
-	context.lineWidth = 1;
-	context.strokeRect(canvas.width / 2 - me.x, canvas.height / 2 - me.y, MAP_WIDTH, MAP_HEIGHT);
+	// context.strokeStyle = "black";
+	// context.lineWidth = 1;
+	// context.strokeRect(canvas.width / 2 - me.x, canvas.height / 2 - me.y, MAP_WIDTH, MAP_HEIGHT);
 
 	// Draw all bullets
-	bullets.forEach(renderBullet.bind(null, me));
+	// bullets.forEach(renderBullet.bind(null, me));
 
 	// Draw all players
 	renderPlayer(me, me);
 	others.forEach(renderPlayer.bind(null, me));
+
+	// Render waterline on top of everything
+	renderWaterline(me.x, me.y);
 }
 
 function renderText(me) {
@@ -115,11 +118,20 @@ function renderText(me) {
 }
 
 function renderBackground(x, y) {
-	context.fillStyle = "black";
+	context.fillStyle = "#12171f";
 	context.fillRect(0, 0, canvas.width, canvas.height);
 	const mapX = 0 - x + canvas.width / 2;
 	const mapY = 0 - y + canvas.height / 2;
 	context.drawImage(getAsset("map.svg"), mapX, mapY, MAP_WIDTH, MAP_HEIGHT);
+	context.restore();
+}
+
+function renderWaterline(x, y) {
+	context.fillStyle = "transparent";
+	context.fillRect(0, 0, canvas.width, canvas.height);
+	const mapX = 0 - x + canvas.width / 2;
+	const mapY = 0 - y + canvas.height / 2;
+	context.drawImage(getAsset("waterline.svg"), mapX, mapY, MAP_WIDTH, MAP_HEIGHT);
 	context.restore();
 }
 

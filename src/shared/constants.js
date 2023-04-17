@@ -48,5 +48,24 @@ module.exports = Object.freeze({
 	ANIMAL_SIZE: {
 		x: 53,
 		y: 76
-	}
+	},
+
+	FOODS: [
+		{
+			type: 0,
+			count: 28
+		},
+		{
+			type: 1,
+			count: 28
+		},
+		{
+			type: 2,
+			count: 16
+		},
+		{
+			type: 3,
+			count: 28
+		}
+	]
 });
