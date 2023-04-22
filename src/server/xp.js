@@ -23,7 +23,7 @@ class Xp extends ObjectClass {
 					const pos = mapCollisions(this, line);
 					this.x = Math.max(this.x, pos[0]);
 					this.y = Math.min(this.y, pos[1]);
-					this.type = 3;
+					// this.type = 3;
 					canPlace = true;
 				} else {
 					canPlace = false;

@@ -21,7 +21,7 @@ class Game {
 	}
 
 	generateXp(type) {
-		const xp = new Xp(type || Math.floor(Math.random() * 4));
+		const xp = new Xp(type);
 		if (xp.verify(xp.type)) {
 			this.xp.push(xp);
 		}
@@ -111,32 +111,36 @@ class Game {
 				}
 			});
 		});
-		// this.xp = this.xp.filter((xp) => !xpToRemove.includes(xp));
-		for (let i = 0; i < this.xp.length; i++) {
-			if (xpToRemove.includes(this.xp[i])) {
-				const xpType = this.xp[i].type;
-				this.generateXp(xpType);
-			}
-		}
-		for (let i = 0; i < this.xp.length; i++) {
-			if (xpToRemove.includes(this.xp[i])) {
-				this.xp.splice(i, 1);
-			}
-		}
+		this.xp = this.xp.filter((xp) => !xpToRemove.includes(xp));
+		// for (let i = 0; i < this.xp.length; i++) {
+		// 	if (xpToRemove.includes(this.xp[i])) {
+		// 		const xpType = this.xp[i].type;
+		// 		this.generateXp(xpType);
+		// 	}
+		// }
+		// for (let i = 0; i < this.xp.length; i++) {
+		// 	if (xpToRemove.includes(this.xp[i])) {
+		// 		this.xp.splice(i, 1);
+		// 	}
+		// }
 
 		//Update Xp
-		if (xpToRemove.length == 0) {
-			while (this.xp.length < 100) {
-				var type = Math.floor(Math.random() * 4);
+		// if (xpToRemove.length == 0) {
+		if (this.xp.length < 100) {
+			for (let type = 0; type < 4; type++) {
 				var typeCount = 0;
 				for (let i = 0; i < this.xp.length; i++) {
 					if (this.xp[i].type == type) {
 						typeCount++;
 					}
 				}
-				if (typeCount < Constants.FOODS[type].count) this.generateXp(type);
+				console.log(type, typeCount);
+				if (typeCount < Constants.FOODS[type].count) {
+					this.generateXp(type);
+				}
 			}
 		}
+		// }
 
 		// Update each player
 		Object.keys(this.sockets).forEach((playerID) => {
