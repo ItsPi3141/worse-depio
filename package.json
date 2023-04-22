@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "src/server/server.js",
 	"scripts": {
-		"build-client": "webpack --config webpack.prod.js",
+		"build": "webpack --config webpack.prod.js",
 		"lint": "eslint --cache --ext .js,.jsx src/",
 		"develop": "cross-env NODE_ENV=development NODE_OPTIONS=--openssl-legacy-provider node src/server/server.js",
 		"start": "cross-env NODE_ENV=production NODE_OPTIONS=--openssl-legacy-provider node src/server/server.js",
