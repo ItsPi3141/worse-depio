@@ -11,6 +11,21 @@ const isPlayerNear = Collisions.isPlayerNear;
 
 const { PLAYER_RADIUS } = Constants;
 
+function interpolateDirection(d1, d2, ratio) {
+	const absD = Math.abs(d2 - d1);
+	if (absD >= Math.PI) {
+		// The angle between the directions is large - we should rotate the other way
+		if (d1 > d2) {
+			return d1 + (d2 + 2 * Math.PI - d1) * ratio;
+		} else {
+			return d1 - (d2 - 2 * Math.PI - d1) * ratio;
+		}
+	} else {
+		// Normal interp
+		return d1 + (d2 - d1) * ratio;
+	}
+}
+
 class Player extends ObjectClass {
 	constructor(id, username, x, y, animal) {
 		super(id, x, y, Math.random() * 2 * Math.PI, Constants.PLAYER_SPEED);
@@ -46,13 +61,35 @@ class Player extends ObjectClass {
 
 		const stats = AnimalConstants[this.tier - 1][0];
 
+		if (!this.speedBoost) {
+			this.speedBoost = 0;
+		}
+		if (!this.turnSpdLim) {
+			this.turnSpdLim = 0;
+		}
+
 		// Check if player is out of water
 		const dist = Constants.WATERLINE.y1 - this.y;
 		if (dist > 0 && !stats.canFly) {
-			this.thrust -= 0.3;
+			this.thrust -= 0.35;
 			if (this.directionWhenLeavingWater == null) this.directionWhenLeavingWater = this.direction;
 			if (this.speedWhenLeavingWater == null) this.speedWhenLeavingWater = this.speed;
 		} else {
+			// Give speed boost to dolphin when entering water and facing down
+			if (this.speedWhenLeavingWater != null && (this.direction > (Math.PI * 6) / 10 || this.direction < (Math.PI * 6) / -10)) {
+				if (this.animal.name == "Dolphin") {
+					if (this.speedBoost < 0.99) {
+						this.speedBoost += 0.33;
+					}
+					this.speedBoostClearTime = Date.now();
+				}
+			}
+			// Reset speed boost if facing upward
+			else if (this.speedWhenLeavingWater != null && this.direction < (Math.PI * 6) / 10 && this.direction > (Math.PI * 6) / -10) {
+				if (this.animal.name == "Dolphin") {
+					this.speedBoost = 0;
+				}
+			}
 			this.directionWhenLeavingWater = null;
 			this.speedWhenLeavingWater = null;
 			if (this.thrust < -10) {
@@ -61,9 +98,19 @@ class Player extends ObjectClass {
 				this.thrust = 0;
 			}
 		}
+
+		if (Date.now() - this.speedBoostClearTime > 3000) {
+			if (this.animal.name == "Dolphin") {
+				if (this.speedBoost > 0) {
+					this.speedBoost -= 0.33;
+				}
+			}
+		}
+
 		// Move animal, also account for gravity
-		this.x += dt * (this.speedWhenLeavingWater || this.speed) * speedMultiplier * Math.sin(this.directionWhenLeavingWater || this.direction);
-		this.y -= dt * (this.speedWhenLeavingWater || this.speed) * speedMultiplier * Math.cos(this.directionWhenLeavingWater || this.direction) + this.thrust;
+		this.x += dt * (this.speedWhenLeavingWater + this.speedWhenLeavingWater * this.speedBoost || this.speed + this.speed * this.speedBoost) * speedMultiplier * Math.sin(this.directionWhenLeavingWater || this.direction);
+		this.y -= dt * (this.speedWhenLeavingWater + this.speedWhenLeavingWater * this.speedBoost || this.speed + this.speed * this.speedBoost) * speedMultiplier * Math.cos(this.directionWhenLeavingWater || this.direction);
+		this.y -= this.thrust;
 
 		if (stats.heavy) this.y += 2.5; // + is going down
 		if (stats.buoyant && dist < 0) this.y -= 5; // - is going up
@@ -115,6 +162,22 @@ class Player extends ObjectClass {
 	}
 
 	boost() {
+		if (this.animal.name == "Shark") {
+			if (Date.now() - this.lastBoost > 2500) {
+				if (this.boosts >= 1) {
+					this.speedBoost = 2;
+					this.turnSpdLim = 0.02;
+					setTimeout(() => {
+						this.speedBoost = 0;
+						this.turnSpdLim = 0;
+					}, 2000);
+
+					this.lastBoost = Date.now();
+					this.boosts -= 1;
+				}
+			}
+		}
+		if (!this.animal.canBoost) return;
 		var speedMultiplier = AnimalConstants[this.tier - 1][0].speed;
 		if (this.lastBoost == null) {
 			this.lastBoost = Date.now() - 1100;
@@ -155,6 +218,16 @@ class Player extends ObjectClass {
 		this.hp = animal.hp;
 		this.inithp = animal.hp;
 		this.boosts += 1;
+		this.speedBoost = 0;
+		this.turnSpdLim = 0;
+	}
+
+	setDirection(dir) {
+		if (this.turnSpdLim != 0) {
+			this.direction = interpolateDirection(this.direction, dir, this.turnSpdLim);
+		} else {
+			this.direction = dir;
+		}
 	}
 
 	serializeForUpdate() {
@@ -168,7 +241,9 @@ class Player extends ObjectClass {
 			username: this.username,
 			boosts: this.boosts,
 			opacity: this.opacity,
-			hiding: this.hiding
+			hiding: this.hiding,
+			speedBoost: this.speedBoost,
+			turnSpdLim: this.turnSpdLim
 		};
 	}
 }

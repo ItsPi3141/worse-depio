@@ -141,9 +141,20 @@ function renderPlayer(me, player) {
 	window.me = me;
 	window.player = player;
 	var { x, y, direction } = player;
-	if (me) direction = getPlayerDir();
+	if (me == player && player.turnSpdLim == 0) direction = getPlayerDir();
 	const canvasX = canvas.width / 2 + x - me.x;
 	const canvasY = canvas.height / 2 + y - me.y;
+
+	if (player.speedBoost != 0) {
+		context.save();
+		context.translate(canvasX, canvasY);
+		context.translate(Math.sin(direction) * (player.stats.size.y * -0.4) * Math.min(player.speedBoost * 0.69, 0.8), Math.cos(direction) * (player.stats.size.y * 0.4) * Math.min(player.speedBoost * 0.69, 0.8));
+		context.rotate(direction);
+		context.globalAlpha = player.opacity / 2;
+		context.drawImage(getAsset(player.stats.img), player.stats.size.x / -2, player.stats.size.y / -2, player.stats.size.x, player.stats.size.y);
+		context.globalAlpha = 1;
+		context.restore();
+	}
 
 	context.save();
 	context.translate(canvasX, canvasY);
