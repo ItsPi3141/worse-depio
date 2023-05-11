@@ -82,9 +82,11 @@ class Game {
 				MapConstants.MAP_LINES.forEach((line) => {
 					if (isNear(xp, line)) {
 						const pos = mapCollisions(xp, line);
+						// xp.x = Math.max(xp.x, pos[0]);
+						// let slope = 1 / ((line.x2 - line.x1) / (line.y2 - line.y1));
+						// xp.y = Math.min(xp.y, pos[1] - 20 * slope);
 						xp.x = Math.max(xp.x, pos[0]);
-						let slope = 1 / ((line.x2 - line.x1) / (line.y2 - line.y1));
-						xp.y = Math.min(xp.y, pos[1] - 20 * slope);
+						xp.y = Math.min(xp.y, pos[1]);
 						xp.settled = true;
 					}
 				});
@@ -189,6 +191,10 @@ class Game {
 			.sort((p1, p2) => p2.score - p1.score)
 			.slice(0, 5)
 			.map((p) => ({ username: p.username, score: Math.round(p.score) }));
+	}
+
+	getPlayers() {
+		return this.players;
 	}
 
 	createUpdate(player, leaderboard) {

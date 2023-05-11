@@ -18,7 +18,7 @@ module.exports = {
 		const width = Math.max(x1, x2);
 		const y = Math.min(y1, y2);
 		// const height= Math.max(y1,y2)
-		if (me.x > x - 10 && me.x < width + 10 && me.y > y + 10) {
+		if (me.x > x - 5 && me.x < width + 5 && me.y > y) {
 			return true;
 		} else {
 			return false;
@@ -92,24 +92,6 @@ module.exports = {
 		return [me.x, me.y];
 	},
 
-	// mapPlayerCollisions: function (me, obj, xFac, yFac) {
-	// 	me.stats = AnimalConstants[me.tier - 1][0];
-	// 	const { x1, x2, y1, y2 } = obj;
-	// 	const m = (y2 - y1) / (x2 - x1);
-	// 	me.x = me.x + (me.stats.size.x / 2) * xFac;
-	// 	me.y = me.y + (me.stats.size.y / 2) * yFac;
-	// 	if (m < 1) {
-	// 		const c1 = y1 - m * x1;
-	// 		const dy = me.x * m + c1;
-	// 		return [me.x, dy];
-	// 	}
-	// 	if (m > 1) {
-	// 		const c2 = x1 - y1 / m;
-	// 		const dx = me.y / m + c2;
-	// 		return [dx, me.y];
-	// 	}
-	// 	return [me.x, me.y];
-	// }
 	mapPlayerCollisions: function (me, obj) {
 		const { x1, x2, y1, y2 } = obj;
 		const m = (y2 - y1) / (x2 - x1);
@@ -132,13 +114,11 @@ module.exports = {
 
 		if (m < 1) {
 			const c1 = y1 - m * x1;
-			// const dy = me.x * m + c1 - PLAYER_RADIUS * AnimalConstants[me.tier - 1][0].size.multiplier * 0.9;
 			const dy = me.x * m + c1 - calcPlayerRadius;
 			return [me.x, dy];
 		}
 		if (m > 1) {
 			const c2 = x1 - y1 / m;
-			// const dx = me.y / m + c2 + PLAYER_RADIUS * AnimalConstants[me.tier - 1][0].size.multiplier * 0.9;
 			const dx = me.y / m + c2 + calcPlayerRadius;
 			return [dx, me.y];
 		}
